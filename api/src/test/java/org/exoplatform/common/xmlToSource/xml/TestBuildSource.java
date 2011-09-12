@@ -16,14 +16,31 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package org.exoplatform.common.xmlToSource.parser;
+package org.exoplatform.common.xmlToSource.xml;
 
-import org.exoplatform.common.xmlToSource.annotation.TypeInfo;
+import junit.framework.TestCase;
+import org.exoplatform.common.xmlToSource.source.SourceGenerator;
+import java.io.InputStream;
+import java.util.Map;
 
 /**
  * @author <a href="hoang281283@gmail.com">Minh Hoang TO</a>
- * @date 7/18/11
+ * @date 9/12/11
  */
-public class TestTypeInfoBis
+public class TestBuildSource extends TestCase
 {
+
+   public void testBuildSource()
+   {
+      InputStream is = Thread.currentThread().getContextClassLoader().getResourceAsStream("binding.xml");
+      Map<String, String> codeSources = SourceGenerator.buildSource(is);
+
+      assertEquals(2, codeSources.size());
+
+      for(String code : codeSources.values())
+      {
+         System.out.println(code);
+         System.out.println();
+      }
+   }
 }

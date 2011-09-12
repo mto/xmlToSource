@@ -16,8 +16,21 @@
   <dependencies>
     <dependency>
       <groupId>org.exoplatform.common.xmlToSource</groupId>
-      <artifactId>org.exoplatform.common.xmlToSource.annotation</artifactId>
+      <artifactId>org.exoplatform.common.xmlToSource.api</artifactId>
+      <version>${xmlToSource.version}</version>
     </dependency>
   </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+            <configuration>
+              <compilerArgument>-proc:none</compilerArgument>
+            </configuration>
+      </plugin>
+    </plugins>
+  </build>
 
 </project>

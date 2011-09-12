@@ -17,6 +17,7 @@
     <dependency>
       <groupId>org.exoplatform.common.xmlToSource</groupId>
       <artifactId>org.exoplatform.common.xmlToSource.apt</artifactId>
+      <version>${xmlToSource.version}</version>
       <scope>compile</scope>
     </dependency>
 

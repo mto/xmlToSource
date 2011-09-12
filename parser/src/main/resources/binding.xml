@@ -1,0 +1,11 @@
+<binding>
+  <mapping class="org.exoplatform.common.xmlToSource.sample.Foo">
+    <setter methodName="setFirstField" param="toto"/>
+    <setter methodName="setSecondField" param="titi"/>
+    <setter methodName="setThirdField" param="tutu"/>
+  </mapping>
+
+  <mapping class="org.exoplatform.common.xmlToSource.sample.Bar">
+    <setter methodName="setBarField" param="XYZ"/>
+  </mapping>
+</binding>

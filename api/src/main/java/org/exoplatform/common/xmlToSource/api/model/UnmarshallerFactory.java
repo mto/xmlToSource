@@ -18,17 +18,27 @@
  */
 package org.exoplatform.common.xmlToSource.api.model;
 
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author <a href="hoang281283@gmail.com">Minh Hoang TO</a>
- * @date 7/19/11
+ * @date 9/12/11
  */
-public interface BindingMetaData
+public class UnmarshallerFactory
 {
-   //TODO: Replace the primitive String with a builtin reflection model
-   public String getBingdingType();
+   public final static Map<String, Unmarshaller> UNMARSHALLERs = new HashMap<String, Unmarshaller>();
 
-   public List<String> getBindingFields();
-
+   public static <T> Unmarshaller<T> getUnmarshaller(Class<T> type)
+   {
+      Unmarshaller unmarshaller = UNMARSHALLERs.get(type.getCanonicalName());
+      if(unmarshaller != null)
+      {
+         return (Unmarshaller<T>)unmarshaller;
+      }
+      else
+      {
+         return null;
+      }
+   }
 }

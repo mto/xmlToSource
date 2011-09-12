@@ -16,22 +16,42 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package org.exoplatform.common.xmlToSource.annotation;
+package org.exoplatform.common.xmlToSource.xml;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * @author <a href="hoang281283@gmail.com">Minh Hoang TO</a>
- * @date 7/8/11
+ * @date 9/12/11
  */
-@Target(ElementType.PACKAGE)
-@Retention(RetentionPolicy.SOURCE)
-public @interface XmlPath
+public class MappingElement
 {
-   String path();
 
-   String type();
+   private final String qualifedClassName;
+
+   private List<SetterElement> setterElements;
+
+   public MappingElement(String qualifedClassName, List<SetterElement> setterElements)
+   {
+      this.qualifedClassName = qualifedClassName;
+      if(setterElements != null)
+      {
+         this.setterElements = setterElements;
+      }
+      else
+      {
+         this.setterElements = new LinkedList<SetterElement>();
+      }
+   }
+
+   public String getQualifedClassName()
+   {
+      return qualifedClassName;
+   }
+
+   public List<SetterElement> getSetterElements()
+   {
+      return setterElements;
+   }
 }

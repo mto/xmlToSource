@@ -18,9 +18,11 @@
  */
 package org.exoplatform.common.codegen;
 
-import org.exoplatform.common.xmlToSource.annotation.TypeInfo;
+import org.exoplatform.common.xmlToSource.source.SourceGenerator;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.Writer;
+import java.util.Map;
 import java.util.Set;
 import javax.annotation.processing.AbstractProcessor;
 import javax.annotation.processing.Filer;
@@ -29,20 +31,22 @@ import javax.annotation.processing.RoundEnvironment;
 import javax.annotation.processing.SupportedAnnotationTypes;
 import javax.annotation.processing.SupportedSourceVersion;
 import javax.lang.model.SourceVersion;
-import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
-import javax.tools.Diagnostic;
+import javax.tools.FileObject;
+import javax.tools.JavaFileManager;
 import javax.tools.JavaFileObject;
+import javax.tools.StandardLocation;
 
 /**
  * @author <a href="hoang281283@gmail.com">Minh Hoang TO</a>
  * @date 7/8/11
  */
 @SupportedSourceVersion(SourceVersion.RELEASE_6)
-@SupportedAnnotationTypes({"org.exoplatform.common.xmlToSource.annotation.TypeInfo"})
+@SupportedAnnotationTypes("*")
 public class CodeGenerator extends AbstractProcessor
 {
 
+   private boolean processed = false;
 
    @Override
    public void init(ProcessingEnvironment processingEnv)
@@ -53,47 +57,70 @@ public class CodeGenerator extends AbstractProcessor
    @Override
    public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv)
    {
-      if(annotations.size() > 0)
+      if(!processed)
       {
+         processed = true;
          _process(annotations, roundEnv, this.processingEnv);
       }
       return true;
    }
 
-   public boolean _process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv, ProcessingEnvironment processingEnv)
+   public void _process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv, ProcessingEnvironment processingEnv)
    {
       Filer filer = processingEnv.getFiler();
-      JavaFileObject fileObject;
-      Writer writer = null;
+      InputStream is = null;
       try
       {
-         fileObject = filer.createSourceFile("org.exoplatform.common.xmlToSource.parser.TestClassA");
-         writer = fileObject.openWriter();
-
-         StringBuilder source = new StringBuilder();
-         source.append("package org.exoplatform.common.xmlToSource.parser;\n");
-         source.append("public class TestClassA\n{\n");
-
-         source.append("public static void main(String[] args)\n{\n System.out.println(\"Hoang loves Trang\"); \n}\n");
-         source.append("}");
-         writer.append(source);
+         FileObject bindingFile = filer.getResource(StandardLocation.CLASS_PATH, "", "binding.xml");
+         is = bindingFile.openInputStream();
       }
-      catch(Exception ex)
+      catch (IOException ioEx)
       {
-         ex.printStackTrace();
       }
-      finally
+
+      if(is == null)
       {
-         try{
-            writer.flush();
-            writer.close();
-         }
-         catch(IOException ex)
+         return;
+      }
+      else
+      {
+         Map<String, String> codeSources = SourceGenerator.buildSource(is);
+
+
+         for(String qualifiedClassName : codeSources.keySet())
          {
+            int indexOfLastPoint = qualifiedClassName.lastIndexOf(".");
+            String packageName = qualifiedClassName.substring(0, indexOfLastPoint);
+            String typeName = qualifiedClassName.substring(indexOfLastPoint + 1, qualifiedClassName.length());
 
+            Writer writer = null;
+            try
+            {
+               JavaFileObject newCodeFile = filer.createSourceFile(packageName + ".Unmarshaller_" + typeName);
+               System.out.println(codeSources.get(qualifiedClassName));
+               writer = newCodeFile.openWriter();
+               writer.write(codeSources.get(qualifiedClassName));
+               writer.flush();
+            }
+            catch (IOException ioEx)
+            {
+               ioEx.printStackTrace();
+
+            }
+            finally
+            {
+               if (writer != null)
+               {
+                  try
+                  {
+                     writer.close();
+                  }
+                  catch (IOException ioEx)
+                  {
+                  }
+               }
+            }
          }
       }
-
-      return true;
    }
 }

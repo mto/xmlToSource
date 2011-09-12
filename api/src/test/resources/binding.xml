@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<binding>
+  <mapping class="org.abc.xyz.Foo">
+    <setter methodName="first" param="1" />
+    <setter methodName="second" param="XYZ" />
+  </mapping>
+
+  <mapping class="org.abc.xyz.Bar">
+    <setter methodName="_first" param="First" />
+    <setter methodName="_second" param="Second" />
+  </mapping>
+</binding>

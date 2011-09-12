@@ -16,28 +16,25 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package org.exoplatform.common.xmlToSource.parser;
+package org.exoplatform.common.xmlToSource.xml;
 
-import org.exoplatform.common.xmlToSource.annotation.XmlPath;
-import java.lang.annotation.Annotation;
+import junit.framework.TestCase;
+import java.io.InputStream;
+import java.util.Map;
 
 /**
  * @author <a href="hoang281283@gmail.com">Minh Hoang TO</a>
- * @date 7/8/11
+ * @date 9/12/11
  */
-public class TestPackageInfo
+public class TestParser extends TestCase
 {
 
-   public static void main(String[] args)
+   public void testParsingDocument()
    {
-      Class clazz = TestPackageInfo.class;
-      Package pack = clazz.getPackage();
-
-      System.out.println("Package name: " + pack.getName());
-
-      XmlPath xmlPath = pack.getAnnotation(XmlPath.class);
-
-      System.out.println("Path and type are: " + xmlPath.path() + "  ;  " + xmlPath.type());
-
+      InputStream is = Thread.currentThread().getContextClassLoader().getResourceAsStream("binding.xml");
+      assertNotNull(is);
+      Map<String, MappingElement> mappingElements = Parser.parseDocument(is);
+      assertEquals(2, mappingElements.size());
    }
+
 }

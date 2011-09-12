@@ -16,15 +16,14 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package org.exoplatform.common.xmlToSource.parser;
-
-import org.exoplatform.common.xmlToSource.annotation.TypeInfo;
+package org.exoplatform.common.xmlToSource.xml;
 
 /**
  * @author <a href="hoang281283@gmail.com">Minh Hoang TO</a>
- * @date 7/18/11
+ * @date 9/12/11
  */
-@TypeInfo
-public class TestTypeInfo
+public class SourceGenVisitor
 {
+
+
 }
