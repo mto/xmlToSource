@@ -29,13 +29,11 @@ import org.exoplatform.common.xmlToSource.api.model.UnmarshallerFactory;
 public class TestBindingObject extends TestCase
 {
 
-   public void testBindingObject()
+   public void testBindingObject() throws Exception
    {
-      for(String key : UnmarshallerFactory.UNMARSHALLERs.keySet())
-      {
-         System.out.println("KEY: " + key);
-      }
-      Unmarshaller<Foo> fooUnmarshaller = UnmarshallerFactory.getUnmarshaller(Foo.class);
+      //Still use java.lang.reflect, but merely to load the unmarshaller into JVM
+      Class<Unmarshaller<Foo>> fooUnmarshallerClazz = (Class<Unmarshaller<Foo>>)Class.forName("org.exoplatform.common.xmlToSource.sample.Unmarshaller_Foo");
+      Unmarshaller<Foo> fooUnmarshaller = fooUnmarshallerClazz.newInstance();
       Foo foo = fooUnmarshaller.unmarshall();
 
       assertNotNull(foo);
@@ -43,7 +41,8 @@ public class TestBindingObject extends TestCase
       assertEquals("titi", foo.secondField);
       assertEquals("tutu", foo.thirdField);
 
-      Unmarshaller<Bar> barUnmarshaller = UnmarshallerFactory.getUnmarshaller(Bar.class);
+      Class<Unmarshaller<Bar>> barUnmarshallerClazz = (Class<Unmarshaller<Bar>>)Class.forName("org.exoplatform.common.xmlToSource.sample.Unmarshaller_Bar");
+      Unmarshaller<Bar> barUnmarshaller = barUnmarshallerClazz.newInstance();
       Bar bar = barUnmarshaller.unmarshall();
 
       assertNotNull(bar);

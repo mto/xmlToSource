@@ -19,6 +19,7 @@
 package org.exoplatform.common.xmlToSource.api.model;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -27,7 +28,8 @@ import java.util.Map;
  */
 public class UnmarshallerFactory
 {
-   public final static Map<String, Unmarshaller> UNMARSHALLERs = new HashMap<String, Unmarshaller>();
+   //Don't know how to make that work for the moment as static{} block is only executed after initializing phase
+   public final static Map<String, Unmarshaller<?>> UNMARSHALLERs = new HashMap<String, Unmarshaller<?>>();
 
    public static <T> Unmarshaller<T> getUnmarshaller(Class<T> type)
    {
